@@ -1,9 +1,3 @@
-// NOTES
-// 
-// ENDSCREEN
-// Display how many guesses it took
-// Display the letters used 
-
 #include <iostream>
 #include <string>
 #include <vector>
@@ -20,6 +14,7 @@ string currentGuess;
 string used;
 
 bool match(char letter, string word);
+
 char askGuess(string usedLettersString); 
 
 // Simple replacement for the system clear screen command
@@ -70,7 +65,7 @@ int main()
 
     // The words to guess
     vector<string> words; 
-    words.push_back("ABYSS");/*
+    words.push_back("ABYSS");
     words.push_back("GLOWWORM");
     words.push_back("OXYGEN");
     words.push_back("JAZZ");
@@ -92,7 +87,7 @@ int main()
     words.push_back("QUEUE");
     words.push_back("PSYCHE");
     words.push_back("ZODIAC");
-    */
+
     cout << "LostRabbitDigital.com\n" << endl;
 
     while(1)
@@ -111,7 +106,7 @@ int main()
         // Loop for current word
         while ((wrongGuesses < numOfGuesses) && (currentGuess != desiredWord))
         {
-            cout << "Guesses Left: " << (numOfGuesses - wrongGuesses) << "";
+            cout << "Guesses Left: " << (numOfGuesses - wrongGuesses) << endl;
             cout << "\nLetters Used: " << used << endl;
             cout << "\nCurrent Word: " << currentGuess << endl;
 
@@ -125,6 +120,9 @@ int main()
 
             toUpper(desiredWord);
             cout << "You got the word correct, It was " << desiredWord << "." << endl;
+            cout << "\nLetters Used: " << used << endl;
+            cout << "Guesses Left: " << (numOfGuesses - wrongGuesses) << endl;
+            cout << "Word: " << desiredWord << endl;
 
             playAgain();
 
@@ -155,7 +153,6 @@ char askGuess(string usedLettersString)
     cin >> guess;
     guess = toupper(guess); 
 
-    wrongGuesses++;
 
     while (match(guess, used))
     {
@@ -179,10 +176,11 @@ char askGuess(string usedLettersString)
             if (desiredWord[i] == guess)
                 currentGuess[i] = guess;
     }
-    else
+    else // Letter was wrong
     {
         clearScreen();
         cout << "Incorrect Guess: " << guess << "\n";
+        wrongGuesses++;
     }
 
     return guess;
