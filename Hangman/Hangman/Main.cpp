@@ -1,4 +1,7 @@
 // Infinite death loop after asking if they'd like to play again
+// Let player move on if already guessed a letter
+// Loops through each word and refreshes screen on player death
+// Make sure all of the libraries are being used
 
 #include <iostream>
 #include <string>
@@ -6,25 +9,69 @@
 #include <algorithm>
 #include <ctime>
 #include <cctype>
+#include <stdlib.h>
 
 using namespace std;
 
-string desiredWord;           
-int wrong;
+int wrongGuesses;
+int numOfGuesses;
+
+string desiredWord;
 string currentGuess;
 string used;
 
 bool match(char letter, string word);
 char askGuess(string usedLettersString); 
-bool done = false;
+
+// Simple replacement for the system clear screen command
+void clearScreen()
+{
+    system("CLS");
+
+}
+
+// Prompts the player to play again
+int playAgain()
+{
+    char again;
+    cout << "\nWould you like to play again? <y/n>: ";
+    cin >> again;
+
+    cin.clear();
+    cin.ignore();
+
+    again = toupper(again);
+
+    if (again == 'Y')
+    {
+        clearScreen();
+        wrongGuesses = 0;
+        numOfGuesses = 8;
+    }
+    else
+    {
+        exit(1);
+    }
+}
+
+// Uppercases only the first letter on the string passed through
+void toUpper(string& str) {
+    if (str.length() == 0) {
+        return;
+    }
+
+    transform(str.begin(), str.end(), str.begin(), ::tolower);
+    str[0] = toupper(str[0]);
+}
+
 
 int main()
 {
     srand(time(0));
 
-    // The possible words to guess (Taken from a list of difficult Hangman words)
+    // The words to guess
     vector<string> words; 
-    words.push_back("ABYSS");
+    words.push_back("ABYSS");/*
     words.push_back("GLOWWORM");
     words.push_back("OXYGEN");
     words.push_back("JAZZ");
@@ -35,13 +82,24 @@ int main()
     words.push_back("PUZZLING");
     words.push_back("IVORY");
     words.push_back("HAIKU");
-    
-    cout << "LostRabbitDigital.com" << endl;
+    words.push_back("BOOKWORM");
+    words.push_back("PEEKABOO");
+    words.push_back("JACKPOT");
+    words.push_back("IVY");
+    words.push_back("WIZARD");
+    words.push_back("FISHHOOK");
+    words.push_back("JOGGING");
+    words.push_back("JINX");
+    words.push_back("QUEUE");
+    words.push_back("PSYCHE");
+    words.push_back("ZODIAC");
+    */
+    cout << "LostRabbitDigital.com\n" << endl;
 
     while(1)
     {
         // Amount of guesses
-        const int guesses = 8;  
+        int numOfGuesses = 8;  
 
         // Pick a random word to guess
         random_shuffle(words.begin(), words.end());
@@ -51,23 +109,36 @@ int main()
         currentGuess = string(desiredWord.size(), '-');         
         used = "";                            
 
-        // loop for current word
-        while ((wrong < guesses) && (currentGuess != desiredWord))
+        // Loop for current word
+        while ((wrongGuesses < numOfGuesses) && (currentGuess != desiredWord))
         {
-            cout << "\nGuess Left: " << (guesses - wrong) << "";
+            cout << "Guess Left: " << (numOfGuesses - wrongGuesses) << "";
             cout << "\nLetters Used: " << used << endl;
             cout << "\nCurrent Word: " << currentGuess << endl;
 
             used += askGuess(used);
         } 
 
-        if (wrong == guesses)
+        // If the player gets the word correct
+        if (currentGuess == desiredWord)
         {
-            system("CLS");
-            cout << "\nYou died.";
+            clearScreen();
+
+            toUpper(desiredWord);
+            cout << "You got the word correct, It was " << desiredWord << "." << endl;
+
+            playAgain();
+
         }
 
-        cout << "\nWord: " << desiredWord << endl;
+        // If the player uses all of their guesses
+        if (wrongGuesses == numOfGuesses)
+        {
+            clearScreen();
+            cout << "You died.";
+
+            playAgain();
+        }
 
     }
     return 0;
@@ -81,12 +152,12 @@ inline bool match(char letter, string word)
 char askGuess(string usedLettersString)
 {
     char guess;
-    cout << "\n\nEnter Guess: ";
+    cout << "\nEnter Guess: ";
     cin >> guess;
     guess = toupper(guess); 
     while (match(guess, used))
     {
-        system("CLS");
+        clearScreen();
         cout << "\nAlready Guessed: " << guess << endl;
         cout << "Enter Guess: ";
         cin >> guess;
@@ -96,8 +167,8 @@ char askGuess(string usedLettersString)
 
     if (match(guess, desiredWord))
     {
-        system("CLS");
-        cout << "Correct Guess: " << guess;
+        clearScreen();
+        cout << "Correct Guess: " << guess << "\n";
 
         // update currentGuess to include newly guessed letter
         for (int i = 0; i < desiredWord.length(); i++)
@@ -106,26 +177,11 @@ char askGuess(string usedLettersString)
     }
     else
     {
-        system("CLS");
-        cout << "Incorrect Guess: " << guess;
-        wrong++;
+        clearScreen();
+        cout << "Incorrect Guess: " << guess << "\n";
+        wrongGuesses++;
     }
 
     return guess;
 }
 
-bool playAgain() 
-{
-    char again;
-    cout << "\n\nWould you like to play again? <y/n>: ";
-    cin >> again;
-
-    cin.clear(); 
-    cin.ignore();
-
-    again = toupper(again);
-
-    system("cls");
-
-    return (again == 'Y');
-}
