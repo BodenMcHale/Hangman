@@ -1,14 +1,13 @@
-// Infinite death loop after asking if they'd like to play again
-// Let player move on if already guessed a letter
-// Loops through each word and refreshes screen on player death
-// Make sure all of the libraries are being used
+// NOTES
+// 
+// ENDSCREEN
+// Display how many guesses it took
+// Display the letters used 
 
 #include <iostream>
 #include <string>
 #include <vector>
 #include <algorithm>
-#include <ctime>
-#include <cctype>
 #include <stdlib.h>
 
 using namespace std;
@@ -112,7 +111,7 @@ int main()
         // Loop for current word
         while ((wrongGuesses < numOfGuesses) && (currentGuess != desiredWord))
         {
-            cout << "Guess Left: " << (numOfGuesses - wrongGuesses) << "";
+            cout << "Guesses Left: " << (numOfGuesses - wrongGuesses) << "";
             cout << "\nLetters Used: " << used << endl;
             cout << "\nCurrent Word: " << currentGuess << endl;
 
@@ -155,11 +154,16 @@ char askGuess(string usedLettersString)
     cout << "\nEnter Guess: ";
     cin >> guess;
     guess = toupper(guess); 
+
+    wrongGuesses++;
+
     while (match(guess, used))
     {
         clearScreen();
-        cout << "\nAlready Guessed: " << guess << endl;
-        cout << "Enter Guess: ";
+        cout << "You have already guessed: " << guess << endl;
+        cout << "\nLetters Used: " << used << endl;
+        cout << "\nCurrent Word: " << currentGuess << endl;
+        cout << "\nEnter Guess: ";
         cin >> guess;
         guess = toupper(guess);
     }
@@ -179,7 +183,6 @@ char askGuess(string usedLettersString)
     {
         clearScreen();
         cout << "Incorrect Guess: " << guess << "\n";
-        wrongGuesses++;
     }
 
     return guess;

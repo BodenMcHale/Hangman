@@ -1,1 +1,4 @@
-﻿  Hangman.vcxproj -> F:\Development\Github\Hangman\Hangman\x64\Debug\Hangman.exe
+﻿  Main.cpp
+F:\Development\Github\Hangman\Hangman\Hangman\Main.cpp(65,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+F:\Development\Github\Hangman\Hangman\Hangman\Main.cpp(50): warning C4715: 'playAgain': not all control paths return a value
+  Hangman.vcxproj -> F:\Development\Github\Hangman\Hangman\x64\Debug\Hangman.exe
