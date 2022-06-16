@@ -1,7 +1,4 @@
 // Infinite death loop after asking if they'd like to play again
-// Clear skin after each question to not clog up the console
-// Finish commenting code
-// Finish renaming variables
 
 #include <iostream>
 #include <string>
@@ -18,28 +15,33 @@ string currentGuess;
 string used;
 
 bool match(char letter, string word);
-char askGuess(string usedLettersStr); 
+char askGuess(string usedLettersString); 
 bool done = false;
 
 int main()
 {
     srand(time(0));
 
-    // The possible words to guess
+    // The possible words to guess (Taken from a list of difficult Hangman words)
     vector<string> words; 
-    words.push_back("GUESS");
-    words.push_back("HANGMAN");
-    words.push_back("DIFFICULT");
-    words.push_back("BOOK");
-    words.push_back("DIGITAL");
-    words.push_back("PROGRAM");
-
-    cout << "HANGMAN";
+    words.push_back("ABYSS");
+    words.push_back("GLOWWORM");
+    words.push_back("OXYGEN");
+    words.push_back("JAZZ");
+    words.push_back("COBWEB");
+    words.push_back("STAFF");
+    words.push_back("ZIPPER");
+    words.push_back("WHISKEY");
+    words.push_back("PUZZLING");
+    words.push_back("IVORY");
+    words.push_back("HAIKU");
+    
+    cout << "LostRabbitDigital.com" << endl;
 
     while(1)
     {
         // Amount of guesses
-        const int guesses = 5;  
+        const int guesses = 8;  
 
         // Pick a random word to guess
         random_shuffle(words.begin(), words.end());
@@ -52,22 +54,22 @@ int main()
         // loop for current word
         while ((wrong < guesses) && (currentGuess != desiredWord))
         {
-            cout << "\n\nYou have " << (guesses - wrong) << " guesses left.\n";
-            cout << "\nYou've used the following letters:\n" << used << endl;
-            cout << "\nSo far, the word is:\n" << currentGuess << endl;
+            cout << "\nGuess Left: " << (guesses - wrong) << "";
+            cout << "\nLetters Used: " << used << endl;
+            cout << "\nCurrent Word: " << currentGuess << endl;
 
             used += askGuess(used);
         } 
 
         if (wrong == guesses)
         {
-            cout << "\nYou've been hanged!";
+            system("CLS");
+            cout << "\nYou died.";
         }
 
-        cout << "\nThe word was " << desiredWord << endl;
+        cout << "\nWord: " << desiredWord << endl;
 
     }
-
     return 0;
 }
 
@@ -76,16 +78,17 @@ inline bool match(char letter, string word)
     return (word.find(letter) != string::npos);
 }
 
-char askGuess(string usedLettersStr)
+char askGuess(string usedLettersString)
 {
     char guess;
-    cout << "\n\nEnter your guess: ";
+    cout << "\n\nEnter Guess: ";
     cin >> guess;
     guess = toupper(guess); 
     while (match(guess, used))
     {
-        cout << "\nYou've already guessed " << guess << endl;
-        cout << "Enter your guess: ";
+        system("CLS");
+        cout << "\nAlready Guessed: " << guess << endl;
+        cout << "Enter Guess: ";
         cin >> guess;
         guess = toupper(guess);
     }
@@ -93,7 +96,8 @@ char askGuess(string usedLettersStr)
 
     if (match(guess, desiredWord))
     {
-        cout << "That's right! " << guess << " is in the word.\n";
+        system("CLS");
+        cout << "Correct Guess: " << guess;
 
         // update currentGuess to include newly guessed letter
         for (int i = 0; i < desiredWord.length(); i++)
@@ -102,7 +106,8 @@ char askGuess(string usedLettersStr)
     }
     else
     {
-        cout << "Sorry, " << guess << " isn't in the word.\n";
+        system("CLS");
+        cout << "Incorrect Guess: " << guess;
         wrong++;
     }
 
