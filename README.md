@@ -31,3 +31,6 @@ Hangman is a word guessing game where the player attempts to construct a missing
 - Queue
 - Psyche
 - Zodiac
+
+# Watermark
+To remove the www.LostRabbitDigital.com water mark, delete line 128. 
